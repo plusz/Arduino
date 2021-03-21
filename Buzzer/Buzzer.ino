@@ -36,7 +36,8 @@ int noteDurations[] = {
 void setup() {
   Serial.begin(9600);
   lcd.begin(16, 2);  // initialize screen size
-  
+
+  pinMode(buzzerPin, OUTPUT);
   pinMode(buttonPin, INPUT);
   pinMode(ledRed, OUTPUT);
   pinMode(ledGreen, OUTPUT);
@@ -46,8 +47,9 @@ void setup() {
 }
 
 void initializeGame() {
+  randomSeed(randomNumber);  // to clear ranrom seed - it hangs sometimes
   randomSeed(analogRead(0));   // ustaw automat losujący
-  randomNumber = random(2, 9);       // wylosuj liczbę
+  randomNumber = random(2, 8);       // random number 
   counter = 0;
   
   ledHigh(ledRed);    // dioda czerwona zaswiecona
@@ -87,7 +89,7 @@ void gra() {
         ledLow(ledBlue);  // turn off blue - success state can be modified, to blink etc.
 
         starWars();
-        delay(5000);  
+        delay(3000);  
         initializeGame();  // try one more time
       }
       else {
@@ -122,6 +124,7 @@ void beep(int note, int duration)
 {
   //Play tone on buzzerPin
   tone(buzzerPin, note, duration);
+  delay(duration);
 }
 
   void success() {
@@ -154,6 +157,7 @@ void beep(int note, int duration)
 
  void firstSection()
 {
+  Serial.println("1st section");
   beep(a, 500);
   beep(a, 500);    
   beep(a, 500);
@@ -181,6 +185,8 @@ void beep(int note, int duration)
  
 void secondSection()
 {
+
+  Serial.println("2nd section");
   beep(aH, 500);
   beep(a, 300);
   beep(a, 150);
@@ -206,6 +212,8 @@ void secondSection()
 
 
 void starWars() {
+
+  Serial.println("main section");
  //Play first section
   firstSection();
  
